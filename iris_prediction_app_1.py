@@ -1,4 +1,4 @@
-# iris_slider_app.py
+# iris_slider_decoder_app.py
 
 import streamlit as st
 import pandas as pd
@@ -8,10 +8,19 @@ import pickle
 with open('tuned_svm_model.pkl', 'rb') as file:
     loaded_model = pickle.load(file)
 
+# Create a function to decode the prediction result
+def decode_species(prediction):
+    species_dict = {
+        0: 'Setosa',
+        1: 'Versicolour',
+        2: 'Virginica'
+    }
+    return species_dict.get(prediction, "Unknown")
+
 # Create a function for the model prediction
 def predict_species(data):
     prediction = loaded_model.predict(data)
-    return prediction[0]
+    return decode_species(prediction[0])
 
 # Design the webpage
 st.title('Iris Species Prediction using Sliders')
@@ -37,4 +46,4 @@ if st.button('Predict'):
     result = predict_species(new_sample)
     st.write('Predicted Species:', result)
 
-# Running the Streamlit app: In your terminal, navigate to the directory containing `iris_slider_app.py` and run `streamlit run iris_slider_app.py`.
+# Running the Streamlit app: In your terminal, navigate to the directory containing `iris_slider_decoder_app.py` and run `streamlit run iris_slider_decoder_app.py`.
